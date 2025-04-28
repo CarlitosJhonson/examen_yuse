@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyectos de Software</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .project-list {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .project {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .project img {
+            width: 30px;
+            height: 30px;
+        }
+        a {
+            text-decoration: none;
+            color: darkblue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Proyectos de Software</h1>
+    <p>Haz clic en el botón para cargar los proyectos</p>
+    <button id="loadBtn">Cargar datos</button>
+
+    <div id="projects" class="project-list"></div>
+
+    <script>
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            fetch('https://gist.githubusercontent.com/tu-usuario/tu-gist-id/raw/proyectos.json')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('projects');
+                    container.innerHTML = '';
+                    data.forEach(proyecto => {
+                        const div = document.createElement('div');
+                        div.className = 'project';
+                        div.innerHTML = `
+                            <img src="https://api.iconify.design/logos:${proyecto.logo}.svg" alt="${proyecto.nombre}" />
+                            <a href="https://es.wikipedia.org/wiki/${encodeURIComponent(proyecto.nombre)}" target="_blank">${proyecto.nombre}</a>
+                        `;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos:', error);
+                    alert('Error al cargar los datos.');
+                });
+        });
+    </script>
+
+</body>
+</html>
